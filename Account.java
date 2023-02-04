@@ -9,23 +9,31 @@ public class Account {
 	@Id
 	private long accNo;
 	private int accPin;
+	private String fullName;
+	private long adharNo;
+	private String panNo;
+	private String gender;
+	private long phoneNo;
+	private String dob;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private Address address;
+	
+	
+	
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 	public int getAccPin() {
 		return accPin;
 	}
 	public void setAccPin(int accPin) {
 		this.accPin = accPin;
 	}
-	private String fullName;
-	private long adharNo;
-	private String panNo;
-	private String gender;
-	private long phoneNo;
-	
-	private String address;
-	private String dob;
-	private int pincode;
-	private String country;
 	public long getAccNo() {
 		return accNo;
 	}
@@ -62,35 +70,20 @@ public class Account {
 	public void setPhoneNo(long phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
+
 	public String getDob() {
 		return dob;
 	}
 	public void setDob(String dob) {
 		this.dob = dob;
 	}
-	public int getPincode() {
-		return pincode;
-	}
-	public void setPincode(int pincode) {
-		this.pincode = pincode;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
 	@Override
 	public String toString() {
-		return "Account [accNo=" + accNo + ", fullName=" + fullName + ", adharNo=" + adharNo + ", panNo=" + panNo
-				+ ", gender=" + gender + ", phoneNo=" + phoneNo + ", address=" + address + ", dob=" + dob + ", pincode="
-				+ pincode + ", country=" + country + "]";
+		return "Account [accNo=" + accNo + ", accPin=" + accPin + ", fullName=" + fullName + ", adharNo=" + adharNo
+				+ ", panNo=" + panNo + ", gender=" + gender + ", phoneNo=" + phoneNo + ", dob=" + dob + ", address="
+				+ address + "]";
 	}
+
+
 
 }

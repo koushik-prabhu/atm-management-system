@@ -27,15 +27,17 @@ import org.hibernate.SessionFactory;
 
 public class Login implements FocusListener{
 
+	
+	//Swing components
 	private JFrame frame;
-	private JTextField atmPin;
-	private JTextField atmNumber;
+	private JTextField atmPin;	//atm pin textfield
+	private JTextField atmNumber;	//atm number textfield
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
-	private JButton btnContinue;
-	private JButton btnNewUser;
-	private JButton btnClear;
-	private JLabel errorMsg;
+	private JButton btnContinue;	//continue button to homepage
+	private JButton btnNewUser;	//signup button
+	private JButton btnClear;	//clear button to make fields null (atm number and pin textfield)
+	private JLabel errorMsg;	//span element to display error messages regarding login
 
 	
 	public Login() {
@@ -45,6 +47,7 @@ public class Login implements FocusListener{
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
@@ -89,9 +92,6 @@ public class Login implements FocusListener{
 		atmNumber.setForeground(new Color(0, 0, 0));
 		atmNumber.addFocusListener(this);
 		
-
-		
-		
 	
 		atmNumber.setColumns(10);
 		atmNumber.setBounds(412, 96, 262, 30);
@@ -110,6 +110,11 @@ public class Login implements FocusListener{
 		btnContinue = new JButton("Continue");
 		
 		
+		/*Action to be performed when continue button pressed 
+		 * 1. check for null and validation 
+		 * 2. check if credentials exists in the databse
+		 */
+		
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -121,12 +126,13 @@ public class Login implements FocusListener{
 					atmNum = Long.parseLong(atmNumber.getText());
 					atmMpin = Integer.parseInt(atmPin.getText());
 					
-
 					if(Authentication.loginValidation(atmNum, atmMpin) == true) {	//Check if login data present in database
 						
-						System.out.print("Welcome Back");
+						new HomePage();
+						frame.dispose();
 					}
 					else {
+
 						errorMsg.setText("No record found! please signup");	//if no data found, print error message
 					}
 				}

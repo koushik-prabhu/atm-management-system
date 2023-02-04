@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -27,6 +28,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 public class SignUp implements KeyListener, Runnable {
 
@@ -42,6 +45,7 @@ public class SignUp implements KeyListener, Runnable {
 	private static String country_names[] = {"India", "America", "England"};	//Country drop down list
 	private static long currentAccountNo = 10000000000l;	//assigns new account number to new customer
 	private static SessionFactory sessionFactory;	//sessionfactory reference
+	private final Action action = new SwingAction();
 	
 	
 
@@ -80,6 +84,8 @@ public class SignUp implements KeyListener, Runnable {
 		
 		if(list.get(0) != null)
 			currentAccountNo = (Long) list.get(0);
+		
+		System.out.print(currentAccountNo);
 
 		session.close();
 	}
@@ -266,34 +272,42 @@ public class SignUp implements KeyListener, Runnable {
 						
 						//Crrate object of account and set value using setters
 						Account newAccount = new Account();
-						newAccount.setAccNo(currentAccountNo++);
+						Address newAddress = new Address();
+						
+						long temp_accNo = ++currentAccountNo;
+						newAccount.setAccNo(temp_accNo);
+						newAddress.setId(temp_accNo);
 						newAccount.setFullName(fullName);
 						newAccount.setAdharNo(temp_adhar);
 						newAccount.setPhoneNo(temp_phone);
-						newAccount.setPincode(temp_pin);
+						
+						newAddress.setPincode(temp_pin);
 						newAccount.setPanNo(panNo);
-						newAccount.setAddress(add);
+						newAddress.setAddress(add);
 						newAccount.setDob(date_of_birth);
-						newAccount.setCountry(country_names[country.getSelectedIndex()]);
+						newAddress.setCountry(country_names[country.getSelectedIndex()]);
 						newAccount.setGender(gen);
+						newAccount.setAddress(newAddress);
 						
 						//Generate random number between 1000 and 9999 as pin number
-						newAccount.setAccPin(ThreadLocalRandom.current().nextInt(1000, 9999));
+						int mPin = ThreadLocalRandom.current().nextInt(1000, 9999);
+						newAccount.setAccPin(mPin);
 						
 						Session session1 = sessionFactory.openSession();	//open new session to save object into databse
 						session1.beginTransaction();
 						session1.save(newAccount);
 						session1.getTransaction().commit();	
+						
+						JOptionPane.showMessageDialog(frame,"Atm No : " + currentAccountNo + "\nAtm Pin: " + mPin, "Please Note!", JOptionPane.WARNING_MESSAGE);
+						
+						new Login();
+						frame.dispose();
 					}
 					else {	//if adharNo or panNo already exist
 						
-						System.out.print("already there");
+						
 					}
 		
-					
-					
-					
-					
 				}
 				else {
 					System.out.print("error");
@@ -338,4 +352,12 @@ public class SignUp implements KeyListener, Runnable {
 
 
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
 }

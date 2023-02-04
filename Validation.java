@@ -8,8 +8,10 @@ import javax.swing.border.MatteBorder;
 
 public class Validation {
 	
-	private static boolean flag = true;
+	private static boolean flag = true;		//if any field of signup is not correct make it false
 
+	
+	//checks if name is empty or not
 	public static void validateFullName(String name, JTextField field) {
 		
 		if(name.equals("") || name == null) {
@@ -18,6 +20,7 @@ public class Validation {
 		}		
 	}
 	
+	//checks if adharNo is empty / only number / as per standard digits
 	public static long validateAdharNo(String adhar, JTextField field) {
 		
 		long value = 0l;
