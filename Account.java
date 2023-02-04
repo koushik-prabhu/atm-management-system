@@ -15,7 +15,9 @@ public class Account {
 	private String gender;
 	private long phoneNo;
 	private String dob;
+	private int amount;
 	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private Address address;
@@ -76,6 +78,12 @@ public class Account {
 	}
 	public void setDob(String dob) {
 		this.dob = dob;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	@Override
 	public String toString() {

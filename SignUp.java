@@ -276,7 +276,7 @@ public class SignUp implements KeyListener, Runnable {
 						
 						long temp_accNo = ++currentAccountNo;
 						newAccount.setAccNo(temp_accNo);
-						newAddress.setId(temp_accNo);
+						
 						newAccount.setFullName(fullName);
 						newAccount.setAdharNo(temp_adhar);
 						newAccount.setPhoneNo(temp_phone);
@@ -287,7 +287,8 @@ public class SignUp implements KeyListener, Runnable {
 						newAccount.setDob(date_of_birth);
 						newAddress.setCountry(country_names[country.getSelectedIndex()]);
 						newAccount.setGender(gen);
-						newAccount.setAddress(newAddress);
+						newAccount.setAmount(2000);
+						
 						
 						//Generate random number between 1000 and 9999 as pin number
 						int mPin = ThreadLocalRandom.current().nextInt(1000, 9999);
@@ -295,6 +296,9 @@ public class SignUp implements KeyListener, Runnable {
 						
 						Session session1 = sessionFactory.openSession();	//open new session to save object into databse
 						session1.beginTransaction();
+						session1.persist(newAccount);
+						newAddress.setId(temp_accNo);
+						newAccount.setAddress(newAddress);
 						session1.save(newAccount);
 						session1.getTransaction().commit();	
 						
