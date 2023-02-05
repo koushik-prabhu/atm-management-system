@@ -68,12 +68,16 @@ public class Transaction {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-//	public long getAccount_id() {
-//		return account_id;
-//	}
-//	public void setAccount_id(long account_id) {
-//		this.account_id = account_id;
-//	}
+	@Override
+	public String toString() {
+		return "Transaction [transaction_id=" + transaction_id + ", transaction_type=" + transaction_type
+				+ ", transaction_date=" + transaction_date + ", transaction_time=" + transaction_time
+				+ ", transaction_status=" + transaction_status + ", transaction_mode=" + transaction_mode + ", balance="
+				+ balance + ", account=" + account + "]";
+	}
+	
+	
+	
 	
 	
 }

@@ -15,6 +15,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
+import java.awt.Cursor;
 
 public class HomePage{
 	
@@ -68,9 +70,9 @@ public class HomePage{
 		panel.setLayout(null);
 		
 		panel_main = new JPanel();
-		panel_main.setBackground(new Color(0, 0, 0));
-		panel_main.setBounds(10, 11, 469, 290);
+		panel_main.setBounds(0, 0, 489, 312);
 		panel.add(panel_main);
+		panel_main.setBackground(new Color(0, 0, 0));
 		panel_main.setLayout(null);
 		panel_main.setVisible(false);
 		
@@ -107,6 +109,11 @@ public class HomePage{
 		JButton btnChangePin = new JButton("Change Pin");
 		btnChangePin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				panel_main.setVisible(false);
+				panel_welcome.setVisible(false);
+				panel.add(ChangePin.change());
+				
 			}
 		});
 		btnChangePin.setBounds(38, 200, 158, 46);
@@ -117,13 +124,22 @@ public class HomePage{
 		panel_main.add(btnNewButton_2_1_1);
 		
 		JButton btnMiniStatement = new JButton("Mini Statement");
+		btnMiniStatement.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				panel_main.setVisible(false);
+				panel_welcome.setVisible(false);
+				panel.add(MiniStatement.miniStatement());
+				
+			}
+		});
 		btnMiniStatement.setBounds(279, 118, 158, 46);
 		panel_main.add(btnMiniStatement);
 		
 		panel_welcome = new JPanel();
-		panel_welcome.setBackground(new Color(0, 0, 0));
-		panel_welcome.setBounds(70, 50, 353, 211);
+		panel_welcome.setBounds(71, 52, 353, 211);
 		panel.add(panel_welcome);
+		panel_welcome.setBackground(new Color(0, 0, 0));
 		panel_welcome.setLayout(null);
 		
 		
@@ -155,14 +171,39 @@ public class HomePage{
 		lblNewLabel_1_1.setBounds(35, 82, 290, 54);
 		panel_welcome.add(lblNewLabel_1_1);
 		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(0, 11, 609, 519);
+		frame.getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
 		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(0, 0, 609, 519);
+		panel_1.add(lblNewLabel);
 		lblNewLabel.setBackground(new Color(255, 255, 255));
 		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\koush\\Downloads\\2cgc_7ssh_211223.jpg"));
-		lblNewLabel.setBounds(0, 11, 609, 519);
-		frame.getContentPane().add(lblNewLabel);
+		
+		JButton btnNewButton = new JButton("X");
+		btnNewButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnNewButton.setFocusPainted(false);
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		btnNewButton.setBorder(null);
+		btnNewButton.setForeground(new Color(248, 199, 199));
+		btnNewButton.setFont(new Font("Arial Black", Font.PLAIN, 18));
+		btnNewButton.setBounds(358, 382, 39, 33);
+		panel_1.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+
+				panel_main.setVisible(true);
+				panel_welcome.setVisible(false);
+				panel.removeAll();
+				panel.add(panel_main);
+				
+			}
+		});
+		btnNewButton.setBackground(new Color(255, 0, 0));
 	}
 	
-	public void Deposit() {
-		
-	}
+
 }

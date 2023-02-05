@@ -118,7 +118,7 @@ public class Login implements FocusListener{
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				long atmNum = 0l;
+				final long atmNum;
 				int atmMpin = 0;
 
 				//Value entered by the user might be string or null
@@ -128,7 +128,16 @@ public class Login implements FocusListener{
 					
 					if(Authentication.loginValidation(atmNum, atmMpin) == true) {	//Check if login data present in database
 						
-						new HomePage(atmNum);
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								try {
+									new HomePage(atmNum);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						});
+
 						frame.dispose();
 					}
 					else {

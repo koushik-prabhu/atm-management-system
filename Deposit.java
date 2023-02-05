@@ -31,7 +31,6 @@ class DepositException extends Exception{
 	public String toString() {
 		return "DepositException [msg=" + msg + "]";
 	}
-	
 }
 public class Deposit {
 
@@ -48,7 +47,7 @@ public class Deposit {
 		
 		panel = new JPanel();
 		panel.setBackground(new Color(0, 0, 0));
-		panel.setBounds(26, 11, 414, 277);
+		panel.setBounds(26, 11, 414, 290);
 		panel.setLayout(null);
 
 		
