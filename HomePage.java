@@ -22,6 +22,8 @@ public class HomePage{
 	JPanel panel_welcome;
 	JPanel panel_main;
 	JPanel panel;
+	
+	public static long currentUser;
 
 	/**
 	 * Launch the application.
@@ -30,7 +32,7 @@ public class HomePage{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HomePage window = new HomePage();
+					HomePage window = new HomePage(10000000001l);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +44,8 @@ public class HomePage{
 	/**
 	 * Create the application.
 	 */
-	public HomePage() {
+	public HomePage(long atmNo) {
+		currentUser = atmNo;
 		initialize();
 	}
 
@@ -89,6 +92,15 @@ public class HomePage{
 		panel_main.add(btnWithdraw);
 		
 		JButton btnBalanceEnquiry = new JButton("Balance Enquiry");
+		btnBalanceEnquiry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				panel_main.setVisible(false);
+				panel_welcome.setVisible(false);
+				panel.add(BalanceEnquiry.getBalanceEnquiry());
+				
+			}
+		});
 		btnBalanceEnquiry.setBounds(38, 118, 158, 46);
 		panel_main.add(btnBalanceEnquiry);
 		

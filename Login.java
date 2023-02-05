@@ -128,7 +128,7 @@ public class Login implements FocusListener{
 					
 					if(Authentication.loginValidation(atmNum, atmMpin) == true) {	//Check if login data present in database
 						
-						new HomePage();
+						new HomePage(atmNum);
 						frame.dispose();
 					}
 					else {

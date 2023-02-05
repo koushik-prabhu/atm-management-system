@@ -2,9 +2,11 @@ package com_hibernate.com_hibernate_ATM;
 
 import java.awt.EventQueue;
 
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
@@ -33,6 +35,7 @@ class DepositException extends Exception{
 }
 public class Deposit {
 
+	private static JPanel panel;
 	private static JLabel errorMsg;
 	public static JTextField enterAmount;
 
@@ -43,7 +46,7 @@ public class Deposit {
 	 */
 	public static JPanel getDeposit() {
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(new Color(0, 0, 0));
 		panel.setBounds(26, 11, 414, 277);
 		panel.setLayout(null);
@@ -88,8 +91,64 @@ public class Deposit {
 					//If valid deposit amount is entered then
 					Session session = Connection.getSessionFactoryObject().openSession();
 					
+					//Fetch details of current user
+					Account account = (Account) session.get(Account.class, HomePage.currentUser);
+					
+					//Ask user to confirm deposit using atm pin
+					String pinText = JOptionPane.showInputDialog(panel, "Enter your pin: ","Confirm", JOptionPane.WARNING_MESSAGE);
+					int pin = Integer.parseInt(pinText);
 					
 					
+					/*create a new transaction object
+					Two results might be generated here
+					*1. entered correct pin = transaction completed
+					*2. entered wrong pin   = transaction failedddd */
+					Transaction newTransaction = new Transaction();
+					Account acc = new Account();
+					acc.setAccNo(HomePage.currentUser);
+					
+					//In both cases, these fields are common
+					newTransaction.setTransaction_type("deposit");
+					newTransaction.setTransaction_date((LocalDate.now().toString()));
+					newTransaction.setTransaction_time(LocalTime.now() + "");
+					newTransaction.setTransaction_mode("deposit-machine-456532");
+					newTransaction.setAccount(acc);
+					session.beginTransaction();
+					//check if entered pin matches the record in the database
+					//if record found then:
+					if(pin == account.getAccPin()) {
+						
+						//if entered pin is correct then status is completed and
+						//deposited amount is added to the total balance
+						
+						newTransaction.setTransaction_status("completed");
+						newTransaction.setBalance(account.getAmount() + amt);
+						session.save(newTransaction);
+						
+						//update the amount value of account table 
+						account.setAmount(account.getAmount() + amt);
+						session.saveOrUpdate(account);
+						
+						System.out.print("done");
+				
+					}
+					else {
+						
+						//if wrong pin entered by the user then:
+						//set the status to failed and store in the transaction table
+						newTransaction.setTransaction_status("failed");
+						newTransaction.setBalance(account.getAmount());
+						session.save(newTransaction);
+						//print error message on the atm screen
+						
+						enterAmount.setText("");
+						errorMsg.setText("Invalid pin");
+						System.out.print("Invalid pin entered");
+					}
+					
+					//AtLast commit all the changes
+					session.getTransaction().commit();
+
 				}
 				catch(NumberFormatException exp) {
 					System.out.print("Depsoit amount is not valid\n" + exp);

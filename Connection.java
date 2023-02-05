@@ -13,6 +13,7 @@ public class Connection {
 			config.configure("hibernate.cfg.xml");
 			config.addAnnotatedClass(Account.class);
 			config.addAnnotatedClass(Address.class);
+			config.addAnnotatedClass(Transaction.class);
 			sessionFactory = config.buildSessionFactory();
 		}	
 		return sessionFactory;
