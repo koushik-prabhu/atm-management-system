@@ -90,6 +90,15 @@ public class HomePage{
 		panel_main.add(btnDeposit);
 		
 		JButton btnWithdraw = new JButton("Withdraw");
+		btnWithdraw.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				panel_main.setVisible(false);
+				panel_welcome.setVisible(false);
+				panel.add(new Withdraw().withDraw());
+				
+			}
+		});
 		btnWithdraw.setBounds(279, 36, 158, 46);
 		panel_main.add(btnWithdraw);
 		
@@ -120,6 +129,14 @@ public class HomePage{
 		panel_main.add(btnChangePin);
 		
 		JButton btnNewButton_2_1_1 = new JButton("Fast Cash");
+		btnNewButton_2_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panel_main.setVisible(false);
+				panel_welcome.setVisible(false);
+				panel.add(new FastCash().fastCash());
+				
+			}
+		});
 		btnNewButton_2_1_1.setBounds(279, 200, 158, 46);
 		panel_main.add(btnNewButton_2_1_1);
 		

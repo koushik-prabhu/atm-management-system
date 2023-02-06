@@ -15,6 +15,7 @@ public class Transaction {
 	private String transaction_status;
 	private String transaction_mode;
 	private int balance;
+	private int transaction_amount;
 	
 	@ManyToOne
 	@JoinColumn(name = "account_id")
@@ -68,13 +69,22 @@ public class Transaction {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
+	
+	public int getTransaction_amount() {
+		return transaction_amount;
+	}
+	public void setTransaction_amount(int transaction_amount) {
+		this.transaction_amount = transaction_amount;
+	}
 	@Override
 	public String toString() {
 		return "Transaction [transaction_id=" + transaction_id + ", transaction_type=" + transaction_type
 				+ ", transaction_date=" + transaction_date + ", transaction_time=" + transaction_time
 				+ ", transaction_status=" + transaction_status + ", transaction_mode=" + transaction_mode + ", balance="
-				+ balance + ", account=" + account + "]";
+				+ balance + ", transaction_amount=" + transaction_amount + ", account=" + account + "]";
 	}
+	
+	
 	
 	
 	

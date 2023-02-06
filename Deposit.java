@@ -110,7 +110,8 @@ public class Deposit {
 					newTransaction.setTransaction_type("deposit");
 					newTransaction.setTransaction_date((LocalDate.now().toString()));
 					newTransaction.setTransaction_time(LocalTime.now() + "");
-					newTransaction.setTransaction_mode("deposit-machine-456532");
+					newTransaction.setTransaction_mode("atm-machine-456532");
+					newTransaction.setTransaction_amount(amt);
 					newTransaction.setAccount(acc);
 					session.beginTransaction();
 					//check if entered pin matches the record in the database
