@@ -56,6 +56,7 @@ public class Login implements FocusListener{
 		frame.setBounds(100, 100, 754, 390);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 0, 0));

@@ -61,7 +61,7 @@ public class HomePage{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
-		
+		frame.setLocationRelativeTo(null);
 		panel = new JPanel();
 		panel.setForeground(new Color(0, 0, 0));
 		panel.setBackground(new Color(0, 0, 0));

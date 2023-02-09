@@ -19,15 +19,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class ChangePin {
-	private static JTextField currentPin;
-	private static JTextField newPin;
-	private static JTextField confirmNewPin;
-	private static JButton btnChange;
+	private static JTextField currentPin;	//textField to enter currentPin
+	private static JTextField newPin;	//textField to enter new pin
+	private static JTextField confirmNewPin;	//textField to confirm new pin
+	private static JButton btnChange;	//Change button to update pin
 	private static String message;
 	private static JLabel showMessage;
 	private static JPanel panel;
 	private static JPanel panel_message;
 	private static JPanel panel_pin;
+	private static JLabel errorMessage;	//onScreen red error message
 
 
 
@@ -41,7 +42,7 @@ public class ChangePin {
 		panel.setLayout(null);
 		panel.setBounds(26, 11, 463, 290);
 		panel_pin = new JPanel();
-		panel_pin.setBounds(10, 84, 439, 196);
+		panel_pin.setBounds(10, 64, 439, 226);
 		panel.add(panel_pin);
 		panel_pin.setBackground(new Color(0, 0, 0));
 		panel_pin.setLayout(null);
@@ -77,31 +78,38 @@ public class ChangePin {
 		
 		btnChange = new JButton("Change");
 		
+		//On Click of the change button:
 		btnChange.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
 				
-				int cPin;	//current pin
-				int nPin;	//new pin
-				int cNPin;	//confirm new pin
-				try {
-					cPin = Integer.parseInt(currentPin.getText());
-					nPin = Integer.parseInt(newPin.getText());
-					cNPin = Integer.parseInt(confirmNewPin.getText());
+			int cPin;	//current pin
+			int nPin;	//new pin
+			int cNPin;	//confirm new pin
+			
+			/*code inside try block might generate number format 
+			* exception while converting string to int
+			*/
+			try {
+				cPin = Integer.parseInt(currentPin.getText());
+				nPin = Integer.parseInt(newPin.getText());
+				cNPin = Integer.parseInt(confirmNewPin.getText());
 					
-					//if all fields are digits then:
+				//if all fields are digits then:
 					
-					panel_pin.setVisible(false);
-					panel_message.setVisible(true);
-					message = Authentication.changePin(cPin, nPin, cNPin);
-					showMessage.setText(message);
-					
-					
-					
+				panel_pin.setVisible(false);
+				panel_message.setVisible(true);
+				
+				/*All the authentication is done in Authentication class 
+				 * under changePin(?,?,?) method
+				 * returns appropriate message
+				 */
+				message = Authentication.changePin(cPin, nPin, cNPin);
+				showMessage.setText(message);	
 				}
 				catch(NumberFormatException exp) {
+					errorMessage.setText("Please enter numbers only!");
 					System.out.println("Enter non numberic data!\n" + exp);
-				}
-				
+				}	
 			}
 		});
 		btnChange.setBounds(155, 157, 147, 28);
@@ -113,6 +121,13 @@ public class ChangePin {
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1_1_1.setBounds(0, 99, 168, 39);
 		panel_pin.add(lblNewLabel_1_1_1);
+		
+		errorMessage = new JLabel("");
+		errorMessage.setForeground(new Color(255, 0, 0));
+		errorMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		errorMessage.setBounds(59, 196, 311, 14);
+		panel_pin.add(errorMessage);
 		
 		JLabel lblNewLabel = new JLabel("Change Pin");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);

@@ -26,14 +26,16 @@ import java.awt.event.ActionEvent;
 
 public class MiniStatement {
 
-	private static JPanel panel;
-	private static JTable table;
-	private static JTextField enterAmount;
+	private static JPanel panel;	//main panel for miniStatment
+	private static JTable table;	//table to print the statement
+	private static JTextField enterPin;
 	private static JScrollPane sp;
 	private static JPanel panel_message;
 	private static JPanel panel_pin;
 	static Object[][] rows = new Object[5][6];
 	static String[] columns = {"SL.", "Trans.Id", "Date&Time", "type", "status", "bal"};
+	private static JLabel printMessage;
+	private static JLabel errorMessage;
 
 
 	/**
@@ -49,31 +51,50 @@ public class MiniStatement {
 		panel_pin = new JPanel();
 		panel_pin.setLayout(null);
 		panel_pin.setBackground(Color.BLACK);
-		panel_pin.setBounds(34, 90, 418, 159);
+		panel_pin.setBounds(34, 90, 418, 176);
 		panel.add(panel_pin);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Enter your pin:");
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1_1.setForeground(Color.WHITE);
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1.setBounds(121, 11, 184, 38);
+		lblNewLabel_1_1.setBounds(114, 11, 184, 38);
 		panel_pin.add(lblNewLabel_1_1);
 		
-		enterAmount = new JTextField();
-		enterAmount.setColumns(10);
-		enterAmount.setBounds(121, 60, 190, 30);
-		panel_pin.add(enterAmount);
+		enterPin = new JTextField();
+		enterPin.setColumns(10);
+		enterPin.setBounds(79, 60, 252, 32);
+		panel_pin.add(enterPin);
 		
 		JButton btnCheck = new JButton("Check");
+		
+		//when user clicks on check button:
 		btnCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				/*code inside try block might generate number format
+				* exception while converting string to int
+				*/
 				try {
-
-					int pin = Integer.parseInt(enterAmount.getText());
+					
+					/*get the value entered by the user and parse it to integer
+					*if the entered value contains null or alphanumeric value, throw NumberFormatException
+					*/
+					int pin = Integer.parseInt(enterPin.getText());
+		
+					//opening a session to get the details from the database
 					Session session = Connection.getSessionFactoryObject().openSession();
+					
+					//Loading the user data with the help of atmno 
 					Account account = (Account) session.load(Account.class, HomePage.currentUser);
 					
+					//check if the entered pin matches the record in the database
+					if(pin != account.getAccPin()) {
+						panel_message.setVisible(true);
+						printMessage.setText("You have entered invalid pin!");
+						throw new Exception("Invalid pin");
+					}
+
 					Query query = session.createQuery("from Transaction where account_id = :id");
 					query.setParameter("id", HomePage.currentUser);
 					query.setMaxResults(5);
@@ -90,15 +111,18 @@ public class MiniStatement {
 							rows[i][5] = action.getBalance();
 
 					}
-
 					sp.setVisible(true);
-					panel_message.setVisible(false);
-					panel_pin.setVisible(false);
+
+
 					
 					
 				}
 				catch(NumberFormatException exp) {
 					System.out.print(exp);
+					if(enterPin.getText().equals(""))
+						errorMessage.setText("Please enter the pin!");
+					else	//if entered pin is alphanumeric
+						errorMessage.setText("Invalid amount! Please enter numbers only");
 				}
 				catch(ObjectNotFoundException exp) {
 					System.out.print(exp);
@@ -109,14 +133,21 @@ public class MiniStatement {
 				
 			}
 		});
-		btnCheck.setBounds(162, 107, 115, 30);
+		btnCheck.setBounds(149, 107, 115, 30);
 		panel_pin.add(btnCheck);
+		
+		errorMessage = new JLabel("");
+		errorMessage.setForeground(new Color(255, 0, 0));
+		errorMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		errorMessage.setBounds(0, 148, 418, 14);
+		panel_pin.add(errorMessage);
 		
 		JLabel lblNewLabel = new JLabel("Mini Statement");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblNewLabel.setBounds(126, 11, 236, 55);
+		lblNewLabel.setBounds(115, 11, 236, 55);
 		panel.add(lblNewLabel);
 		
 		table = new JTable(rows, columns);
@@ -124,8 +155,8 @@ public class MiniStatement {
 		table.setBackground(new Color(0, 0, 0));
 		
 		sp = new JScrollPane(table);
-		sp.setLocation(0, 65);
-	    sp.setSize(486, 223);
+		sp.setLocation(0, 92);
+	    sp.setSize(486, 196);
 	    table.setFillsViewportHeight(true);
 	    sp.setVisible(false);
    
@@ -137,10 +168,12 @@ public class MiniStatement {
 		panel.add(panel_message);
 		panel_message.setLayout(null);
 		
-		JLabel printMessage = new JLabel("");
-		printMessage.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		printMessage = new JLabel("");
+		printMessage.setBackground(new Color(0, 0, 0));
+		printMessage.setForeground(new Color(255, 255, 255));
 		printMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		printMessage.setBounds(0, 300, 486, 64);
+		printMessage.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		printMessage.setBounds(0, 0, 486, 54);
 		panel_message.add(printMessage);
 		
 		return panel;

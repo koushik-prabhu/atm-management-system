@@ -99,6 +99,7 @@ public class SignUp implements KeyListener, Runnable {
 		frame.setBounds(100, 100, 739, 450);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		
 		JLabel lblNewLabel = new JLabel("New User");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
