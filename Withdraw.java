@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Withdraw {
 
@@ -49,6 +51,12 @@ public class Withdraw {
 		panel_1.add(lblNewLabel_1_1);
 		
 		enterAmount = new JTextField();
+		enterAmount.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				errorMessage.setText("");
+			}
+		});
 		enterAmount.setColumns(10);
 		enterAmount.setBounds(109, 60, 252, 32);
 		panel_1.add(enterAmount);
@@ -118,8 +126,8 @@ public class Withdraw {
 		printMessage = new JLabel("");
 		printMessage.setForeground(new Color(255, 255, 255));
 		printMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		printMessage.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		printMessage.setBounds(85, 31, 283, 55);
+		printMessage.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		printMessage.setBounds(10, 31, 427, 55);
 		panel_2.add(printMessage);
 		
 		return panel;

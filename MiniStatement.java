@@ -23,6 +23,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MiniStatement {
 
@@ -33,9 +35,9 @@ public class MiniStatement {
 	private static JPanel panel_message;
 	private static JPanel panel_pin;
 	static Object[][] rows = new Object[5][6];
-	static String[] columns = {"SL.", "Trans.Id", "Date&Time", "type", "status", "bal"};
-	private static JLabel printMessage;
-	private static JLabel errorMessage;
+	static String[] columns = {"SL.", "Trans.Id", "Date&Time", "type", "status", "bal"};	//table attribute names
+	private static JLabel printMessage;	//to output the message of the operation
+	private static JLabel errorMessage;	//to print errors in the panel1
 
 
 	/**
@@ -67,6 +69,12 @@ public class MiniStatement {
 		panel_pin.add(enterPin);
 		
 		JButton btnCheck = new JButton("Check");
+		btnCheck.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				errorMessage.setText("");
+			}
+		});
 		
 		//when user clicks on check button:
 		btnCheck.addActionListener(new ActionListener() {
@@ -88,8 +96,10 @@ public class MiniStatement {
 					//Loading the user data with the help of atmno 
 					Account account = (Account) session.load(Account.class, HomePage.currentUser);
 					
+					panel_pin.setVisible(false);
 					//check if the entered pin matches the record in the database
 					if(pin != account.getAccPin()) {
+
 						panel_message.setVisible(true);
 						printMessage.setText("You have entered invalid pin!");
 						throw new Exception("Invalid pin");
@@ -100,7 +110,8 @@ public class MiniStatement {
 					query.setMaxResults(5);
 					ArrayList list = (ArrayList) query.list();
 					
-
+					
+					//Map all the values from database to 2d array
 					for(int i = 0; i < list.size(); i++) {
 						Transaction action = (Transaction) list.get(list.size() - 1 - i);
 							rows[i][0] = i + 1;
@@ -147,7 +158,7 @@ public class MiniStatement {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblNewLabel.setBounds(115, 11, 236, 55);
+		lblNewLabel.setBounds(124, 11, 236, 55);
 		panel.add(lblNewLabel);
 		
 		table = new JTable(rows, columns);

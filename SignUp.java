@@ -30,12 +30,16 @@ import java.awt.Color;
 import javax.swing.border.MatteBorder;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class SignUp implements KeyListener, Runnable {
 
 	private JFrame frame;
-	private JTextField Jname;
-	private JTextField Jadhar;
+	
+	//Fields to hold user data
+	private JTextField Jname;	
+	private JTextField Jadhar;		
 	private JTextField Jpan;
 	private JTextField Jphone;
 	private JTextField Jaddress;
@@ -44,8 +48,9 @@ public class SignUp implements KeyListener, Runnable {
 	
 	private static String country_names[] = {"India", "America", "England"};	//Country drop down list
 	private static long currentAccountNo = 10000000000l;	//assigns new account number to new customer
-	private static SessionFactory sessionFactory;	//sessionfactory reference
+	private static SessionFactory sessionFactory;	//session factory reference
 	private final Action action = new SwingAction();
+	private JLabel terms;
 	
 	
 
@@ -70,23 +75,26 @@ public class SignUp implements KeyListener, Runnable {
 	 */
 	public SignUp() {
 		initialize();
-		
-		
 	}
 	
+	
+	/* New thread  
+	 * Task - fetch latest or highest account number from the database 
+	 */
 	public void run() {
 		sessionFactory = Connection.getSessionFactoryObject();
 		Session session = sessionFactory.openSession();
 		
+		//returns highest account number value if exists
 		Query query = session.createQuery("select max(accNo) from Account");
 		
-		ArrayList list = (ArrayList) query.list();
+		ArrayList list = (ArrayList) query.list();	//stores the data
 		
+		//if atleast one record exist in the database
 		if(list.get(0) != null)
-			currentAccountNo = (Long) list.get(0);
+			currentAccountNo = (Long) list.get(0); 	//store the highest value account number
 		
 		System.out.print(currentAccountNo);
-
 		session.close();
 	}
 
@@ -131,6 +139,7 @@ public class SignUp implements KeyListener, Runnable {
 		Jadhar = new JTextField();
 		Jadhar.setColumns(10);
 		Jadhar.setBounds(10, 96, 226, 28);
+		Jadhar.addKeyListener(this);
 		panel.add(Jadhar);
 		
 		JLabel lblNewLabel_1_2 = new JLabel("PAN No.");
@@ -140,6 +149,7 @@ public class SignUp implements KeyListener, Runnable {
 		
 		Jpan = new JTextField();
 		Jpan.setColumns(10);
+		Jpan.addKeyListener(this);
 		Jpan.setBounds(10, 158, 226, 28);
 		panel.add(Jpan);
 		
@@ -169,6 +179,7 @@ public class SignUp implements KeyListener, Runnable {
 		
 		Jphone = new JTextField();
 		Jphone.setColumns(10);
+		Jphone.addKeyListener(this);
 		Jphone.setBounds(10, 269, 226, 28);
 		panel.add(Jphone);
 		
@@ -179,6 +190,7 @@ public class SignUp implements KeyListener, Runnable {
 		
 		Jaddress = new JTextField();
 		Jaddress.setColumns(10);
+		Jaddress.addKeyListener(this);
 		Jaddress.setBounds(352, 35, 226, 28);
 		panel.add(Jaddress);
 		
@@ -187,12 +199,17 @@ public class SignUp implements KeyListener, Runnable {
 		label_dob.setBounds(352, 74, 81, 23);
 		panel.add(label_dob);
 		
-		JLabel lblNewLabel_1_3_2 = new JLabel("Terms and conditions*");
-		lblNewLabel_1_3_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_1_3_2.setBounds(352, 271, 135, 23);
-		panel.add(lblNewLabel_1_3_2);
+		terms = new JLabel("Terms and conditions*");
+		terms.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		terms.setBounds(352, 271, 135, 23);
+		panel.add(terms);
 		
 		final JCheckBox termsAndCon = new JCheckBox("");
+		termsAndCon.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				terms.setForeground(Color.BLACK);
+			}
+		});
 		termsAndCon.setBounds(494, 269, 99, 28);
 		panel.add(termsAndCon);
 		
@@ -203,6 +220,7 @@ public class SignUp implements KeyListener, Runnable {
 		
 		dob = new JTextField();
 		dob.setColumns(10);
+		dob.addKeyListener(this);
 		dob.setBounds(352, 96, 226, 28);
 		panel.add(dob);
 		
@@ -217,6 +235,7 @@ public class SignUp implements KeyListener, Runnable {
 		
 		Jpincode = new JTextField();
 		Jpincode.setColumns(10);
+		Jpincode.addKeyListener(this);
 		Jpincode.setBounds(352, 158, 226, 28);
 		panel.add(Jpincode);
 		
@@ -226,8 +245,6 @@ public class SignUp implements KeyListener, Runnable {
 		//When clicked on create new account
 		btnNewAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
 				
 				String gen = "";
 				if(male.isSelected()) 
@@ -256,9 +273,15 @@ public class SignUp implements KeyListener, Runnable {
 				int temp_pin = Validation.validatePincode(pinCode, Jpincode);
 				Validation.validatePanNo(panNo, Jpan);
 				Validation.validateAddress(add, Jaddress);
+				Validation.validateDob(date_of_birth, dob);
 				
 				
 				if(Validation.proceed()) {	//if all fields are correct then:
+					
+					if(!termsAndCon.isSelected()) {
+						terms.setForeground(Color.RED);
+						return;
+					}
 					
 					Session session = sessionFactory.openSession();
 					
@@ -349,13 +372,10 @@ public class SignUp implements KeyListener, Runnable {
 		// TODO Auto-generated method stub
 		
 	}
-
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {

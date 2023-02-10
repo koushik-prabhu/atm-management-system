@@ -40,11 +40,18 @@ public class Authentication {
 		
 	}
 	
+	
+	/*All the authentication regarding withdrawal activity goes here:
+	 * Functions:
+	 * 1. check if amount entered is < or > total available balance
+	 * 2. check if pin entered by the user matches the record
+	 * 3. update database <even if transaction fails for insufficient amount>
+	 */
 	public static String withDrawAmount(int amt, int pin) {
 		String message = "";
 		
 		Session session = Connection.getSessionFactoryObject().openSession();
-		Account account = (Account) session.get(Account.class, HomePage.currentUser);
+		Account account = (Account) session.get(Account.class, HomePage.currentUser);	//fetch the details of the current user
 		
 		//if account found with the associated account number then:
 		if(account != null) {
@@ -66,14 +73,16 @@ public class Authentication {
 						newTransaction.setBalance(account.getAmount() - amt);
 						session.save(newTransaction);
 						
-						message = "transaction completed!";
+						message = "transaction completed! please collect your cash.";
 
 				}
-				else {
+				else {	//when amount entered exceeds the total balance
 					newTransaction.setTransaction_status("failed");
 					newTransaction.setBalance(account.getAmount());
 					session.save(newTransaction);
 					message = "insufficient balance!";
+					
+					//<note: database is still updated>
 				}
 				session.getTransaction().commit();
 			}

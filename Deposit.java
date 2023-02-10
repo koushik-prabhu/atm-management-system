@@ -133,10 +133,6 @@ public class Deposit {
 		printMessage.setBounds(10, 24, 423, 80);
 		panel_2.add(printMessage);
 				
-		
-		
-		
-		
 		//onClick of proceed button:
 		btnProceed.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {

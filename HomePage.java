@@ -20,15 +20,16 @@ import java.awt.Cursor;
 
 public class HomePage{
 	
-	JFrame frame;
-	JPanel panel_welcome;
-	JPanel panel_main;
+	JFrame frame;	//main frame
+	JPanel panel_welcome;	//welcome panel
+	JPanel panel_main;	//panel for all operations
 	JPanel panel;
 	
 	public static long currentUser;
 
 	/**
 	 * Launch the application.
+	 * Entry point
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -45,6 +46,7 @@ public class HomePage{
 
 	/**
 	 * Create the application.
+	 * When user logs in, his atm number acts as a session variable throughout the application
 	 */
 	public HomePage(long atmNo) {
 		currentUser = atmNo;
@@ -77,59 +79,92 @@ public class HomePage{
 		panel_main.setVisible(false);
 		
 		JButton btnDeposit = new JButton("Deposit");
+		btnDeposit.setBounds(38, 36, 158, 46);
+		panel_main.add(btnDeposit);
+		
+		/*On click of deposit option
+		 * 1. replace deposit panel with home panel
+		 * 2. get the amount from the user and save into the database
+		 */
 		btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				panel_main.setVisible(false);
 				panel_welcome.setVisible(false);
 				panel.add(Deposit.getDeposit());
-				
 			}
 		});
-		btnDeposit.setBounds(38, 36, 158, 46);
-		panel_main.add(btnDeposit);
+		
+		
+		
 		
 		JButton btnWithdraw = new JButton("Withdraw");
+		btnWithdraw.setBounds(279, 36, 158, 46);
+		panel_main.add(btnWithdraw);
+		
+		/*On click of withdraw option
+		 * 1. replace withdraw panel with home panel
+		 * 2. get the pin from the user and perform withdrawal operation
+		 */
 		btnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				panel_main.setVisible(false);
 				panel_welcome.setVisible(false);
-				panel.add(new Withdraw().withDraw());
-				
+				panel.add(new Withdraw().withDraw());	
 			}
 		});
-		btnWithdraw.setBounds(279, 36, 158, 46);
-		panel_main.add(btnWithdraw);
+		
+		
+		
 		
 		JButton btnBalanceEnquiry = new JButton("Balance Enquiry");
+		btnBalanceEnquiry.setBounds(38, 118, 158, 46);
+		panel_main.add(btnBalanceEnquiry);
+		
+		/*On click of balanceEnquiry option
+		 * 1. replace balanceQnquiry panel with home panel
+		 * 2. get the pin from the user and fetch the balance
+		 */
 		btnBalanceEnquiry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				panel_main.setVisible(false);
 				panel_welcome.setVisible(false);
-				panel.add(BalanceEnquiry.getBalanceEnquiry());
-				
+				panel.add(BalanceEnquiry.getBalanceEnquiry());	
 			}
 		});
-		btnBalanceEnquiry.setBounds(38, 118, 158, 46);
-		panel_main.add(btnBalanceEnquiry);
+	
+		
+		
 		
 		JButton btnChangePin = new JButton("Change Pin");
+		btnChangePin.setBounds(38, 200, 158, 46);
+		panel_main.add(btnChangePin);
+		
+		/*On click of change pin option
+		 * 1. replace change pin panel with home panel
+		 * 2. get the pin, new pin from the user, and validate
+		 */
 		btnChangePin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				panel_main.setVisible(false);
 				panel_welcome.setVisible(false);
-				panel.add(ChangePin.change());
-				
+				panel.add(ChangePin.change());	
 			}
 		});
-		btnChangePin.setBounds(38, 200, 158, 46);
-		panel_main.add(btnChangePin);
+	
 		
-		JButton btnNewButton_2_1_1 = new JButton("Fast Cash");
-		btnNewButton_2_1_1.addActionListener(new ActionListener() {
+		JButton btnFastCash = new JButton("Fast Cash");
+		btnFastCash.setBounds(279, 200, 158, 46);
+		panel_main.add(btnFastCash);
+		
+		/*On click of balanceEnquiry option
+		 * 1. replace fast cash panel with home panel
+		 * 2. get the pin from the user and perform withdraw operation
+		 */
+		btnFastCash.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panel_main.setVisible(false);
 				panel_welcome.setVisible(false);
@@ -137,22 +172,29 @@ public class HomePage{
 				
 			}
 		});
-		btnNewButton_2_1_1.setBounds(279, 200, 158, 46);
-		panel_main.add(btnNewButton_2_1_1);
+		
+		
+		
 		
 		JButton btnMiniStatement = new JButton("Mini Statement");
+		btnMiniStatement.setBounds(279, 118, 158, 46);
+		panel_main.add(btnMiniStatement);
+		
+		/*On click of mini statement option
+		 * 1. replace mini statement panel with home panel
+		 * 2. get the pin from the user and fetch transaction details
+		 */
 		btnMiniStatement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				panel_main.setVisible(false);
 				panel_welcome.setVisible(false);
 				panel.add(MiniStatement.miniStatement());
-				
 			}
 		});
-		btnMiniStatement.setBounds(279, 118, 158, 46);
-		panel_main.add(btnMiniStatement);
 		
+		
+	
 		panel_welcome = new JPanel();
 		panel_welcome.setBounds(71, 52, 353, 211);
 		panel.add(panel_welcome);
